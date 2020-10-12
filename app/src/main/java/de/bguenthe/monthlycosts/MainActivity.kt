@@ -1,5 +1,7 @@
 package de.bguenthe.monthlycosts
 
+import android.content.Context
+import android.content.res.AssetManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,15 +10,18 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import de.bguenthe.monthlycosts.database.AppDatabase
 import de.bguenthe.monthlycosts.database.Costs
 import de.bguenthe.monthlycosts.repository.CostsRepository
 import de.bguenthe.monthlycosts.repository.IncomeRepository
+import java.io.IOException
+import java.io.InputStream
 import java.time.LocalDateTime
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.LinkedHashMap
 
 
 class Constants {
@@ -57,7 +62,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         auth = Firebase.auth
-        auth.signInWithEmailAndPassword("monthlycostsuser@gmail.com", "8AyzqxAp42Pm9KHZ8PlC")
+        val user = getProperty("user", this.applicationContext)
+        val pass = getProperty("pass", this.applicationContext)
+        auth.signInWithEmailAndPassword(user!!, pass!!)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
@@ -72,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         costsRepository = CostsRepository(applicationContext)
         //costsRepository.syncCosts()
         //costsRepository.saveAllCostsToServer()
-        costsRepository.saveAllCostsToFirestore()
+        //costsRepository.saveAllCostsToFirestore()
         numberOfMonthsToShow = costsRepository.getNumberOfMonthsToShow()
 
         incomeRepository = IncomeRepository(applicationContext)
@@ -183,5 +190,19 @@ class MainActivity : AppCompatActivity() {
         }
         editTextComment.setText("")
         betrag.requestFocus()
+    }
+
+    @Throws(IOException::class)
+    fun getProperty(key: String?, context: Context): String? {
+        try {
+            val properties = Properties()
+            val assetManager: AssetManager = context.getAssets()
+            val inputStream: InputStream = assetManager.open("config.properties")
+            properties.load(inputStream)
+            return properties.getProperty(key)
+        } catch (e: IOException) {
+            e.fillInStackTrace()
+        }
+        return null
     }
 }
