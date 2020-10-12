@@ -56,21 +56,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        costsRepository = CostsRepository(applicationContext)
-        //costsRepository.syncCosts()
-        //costsRepository.saveAllCostsToServer()
-        //costsRepository.saveAllCostsToFirestore()
-        numberOfMonthsToShow = costsRepository.getNumberOfMonthsToShow()
-
-        incomeRepository = IncomeRepository(applicationContext)
-
-        mViewPager = findViewById(R.id.viewpager)
-        pagerAdapter = BarchartPagerAdapter(supportFragmentManager, numberOfMonthsToShow + 1) // + 1 für den durchschnittsblock
-        mViewPager.adapter = pagerAdapter
-        mViewPager.currentItem = numberOfMonthsToShow - 1
-
         auth = Firebase.auth
-        auth.signInWithEmailAndPassword("xxx", "xxx")
+        auth.signInWithEmailAndPassword("monthlycostsuser@gmail.com", "8AyzqxAp42Pm9KHZ8PlC")
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
@@ -81,6 +68,19 @@ class MainActivity : AppCompatActivity() {
                         Log.e("Firestore AUTH", "signInWithEmail:failure", task.exception)
                     }
                 }
+
+        costsRepository = CostsRepository(applicationContext)
+        //costsRepository.syncCosts()
+        //costsRepository.saveAllCostsToServer()
+        costsRepository.saveAllCostsToFirestore()
+        numberOfMonthsToShow = costsRepository.getNumberOfMonthsToShow()
+
+        incomeRepository = IncomeRepository(applicationContext)
+
+        mViewPager = findViewById(R.id.viewpager)
+        pagerAdapter = BarchartPagerAdapter(supportFragmentManager, numberOfMonthsToShow + 1) // + 1 für den durchschnittsblock
+        mViewPager.adapter = pagerAdapter
+        mViewPager.currentItem = numberOfMonthsToShow - 1
 
         val btnLbm = findViewById<Button>(R.id.lbm)
         btnLbm.text = constants.liste.getValue("lbm").label

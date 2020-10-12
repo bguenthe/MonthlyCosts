@@ -103,7 +103,7 @@ class CostsRepository(val context: Context) {
                     "id" to cost.id,
                     "comments" to cost.comment,
                     "costs" to cost.costs,
-                    "recordDateTime" to cost.recordDateTime,
+                    "recordDateTime" to cost.recordDateTime.toString(),
                     "mqttsend" to cost.mqttsend,
                     "uniqueID" to cost.uniqueID,
                     "type" to cost.type,

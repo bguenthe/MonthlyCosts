@@ -3,7 +3,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 # Use the application default credentials
-cred = credentials.Certificate(r'C:\Users\claube\Documents\ideaprojects\MonthlyCosts\app\monthlycosts-2cea1fc81933.json')
+cred = credentials.Certificate(r'C:\Users\claube\Documents\ideaprojects\MonthlyCosts\python\monthlycosts-2f948-1cc44c2226e5.json')
 firebase_admin.initialize_app(cred)
 
 db = firestore.client()

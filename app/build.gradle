@@ -41,8 +41,6 @@ dependencies {
     kapt "androidx.room:room-compiler:$room_version"
     testImplementation 'junit:junit:4.13'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.2'
-    implementation 'org.eclipse.paho:org.eclipse.paho.android.service:1.1.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     kapt 'android.arch.persistence.room:compiler:1.1.1'
